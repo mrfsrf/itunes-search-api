@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Itunes Api search</title>
+  <link rel="stylesheet" href="dist/css/bootstrap.css">
+  <link rel="stylesheet" href="dist/css/style.css">
+</head>
+<body>
+  <header>
+  </header>
+  <!-- input feild -->
+  <main role="main">
+    <section class="jumbotron text-center to-do">
+      <div class="container">
+        <h1>iTunes Search Music Api</h1>
+        <p class="lead text-muted">Make simple query</p>
+        <div class="container todo-container mt-5 input-group">
+          <input type="text" class="form-control search-music-artist" id="search-box" placeholder="Search Music Artists or Song"
+            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary search-button" type="button" id="button-addon2">Search</button>
+          </div>
+          <!-- <button type="button" class="btn btn-info btn-sm add-todo">Add new item</button> -->
+        </div>
+      </div>
+      
+    </section>
+          <!-- Query Results Body -->
+    <div class="d-flex mx-auto w-100 justify-content-center resul-items">
+      <span class="current-artist"></span>
+      <div class="card-group resul-items-card justify-content-center">
+      </div>
+      <!-- <div class="card card-1">
+        <div class="card-header">
+        </div>
+      </div> -->
+    </div> 
+  </main>
+  <!-- js files -->
+  <script src="dist/js/jquery.min.js"></script>
+  <script src="dist/js/bootstrap.min.js"></script>
+  <script src="dist/js/bundle.js"></script>
+
+</body>
+</html>

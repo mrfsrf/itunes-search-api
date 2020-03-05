@@ -1,0 +1,91 @@
+body {
+  background: #929e9e; }
+
+.jumbotron {
+  background-color: #FDE86B; }
+
+.badge-warning {
+  background-color: #FDE86B !important; }
+
+.card {
+  min-width: 220px !important;
+  max-width: 220px !important;
+  border: 0px !important;
+  background: transparent !important;
+  border-bottom: 2px solid black !important; }
+
+span.track-container {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  margin: 0 auto; }
+
+audio {
+  width: 90%; }
+
+span.song-name {
+  font-size: 11px;
+  word-break: break-word;
+  line-height: 14px;
+  display: inline-block;
+  color: white;
+  width: 90%;
+  padding-bottom: 9px;
+  /* margin: 0 auto; */
+  text-align: center; }
+
+audio::-webkit-media-controls-panel {
+  background-color: #838E8E !important; }
+
+audio::-webkit-media-controls-play-button {
+  width: 50% !important; }
+
+audio::-webkit-media-controls-timeline-container {
+  display: none !important; }
+
+audio::-webkit-media-controls-timeline-container {
+  display: none !important; }
+
+audio::-webkit-media-controls-current-time-display, audio::-webkit-media-controls-time-remaining-display {
+  display: none !important; }
+
+img.card-img-top {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 10px;
+  border-radius: 50% !important; }
+
+span.small-text {
+  font-size: 10px;
+  margin-right: 12px !important; }
+
+.card-body {
+  padding: 0 0 0 1.25rem !important; }
+
+.card-text a {
+  color: white; }
+  .card-text a p {
+    padding-bottom: 2px !important;
+    display: inline-block !important;
+    word-break: break-word;
+    text-decoration: underline !important; }
+
+.card-text p {
+  margin-top: 0.2rem !important;
+  margin-bottom: 6px !important;
+  font-size: .8em;
+  font-weight: bold;
+  display: inline-block;
+  color: white; }
+
+.track-list {
+  font-size: 11px !important;
+  color: white;
+  line-height: 16px;
+  /* margin-top: 5px; */
+  display: table-row; }
+
+.border-bottom {
+  border-bottom: 2px solid black !important; }
