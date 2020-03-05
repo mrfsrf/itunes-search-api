@@ -2,5 +2,5 @@
 playing with itunes search api
 
 ## Still To Do
-[ ] - use express with cors module
-[ ] - refactor code
+- [ ] use express with cors module
+- [ ] refactor code
