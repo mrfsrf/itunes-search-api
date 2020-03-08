@@ -1,5 +1,6 @@
 body {
-  background: #929e9e; }
+  background: #929e9e;
+  font-family: "Roboto", sans-serif !important; }
 
 .jumbotron {
   background-color: #fde86b; }
@@ -18,69 +19,94 @@ span.track-container {
   background-color: rgba(0, 0, 0, 0.1);
   display: inline-block;
   padding: 10px;
-  border-radius: 8px;
   width: 100%;
   margin: 0 auto; }
   span.track-container ol {
     padding-inline-start: 22px !important; }
 
 audio {
-  width: 90%; }
+  width: 100%;
+  height: 16px !important;
+  border: 0px !important;
+  position: relative;
+  left: 8px; }
+
+audio:focus {
+  outline: none !important; }
+
+span.track-number {
+  position: absolute;
+  top: 17px;
+  left: 5px;
+  z-index: 9999;
+  display: inline-block; }
 
 span.song-name {
-  font-size: 11px;
+  font-size: 14px;
   word-break: break-word;
   line-height: 14px;
-  display: inline-block;
+  /* display: inline-block; */
   color: white;
-  width: 90%;
+  /* width: 90%; */
   padding-bottom: 9px;
-  /* margin: 0 auto; */
-  text-align: center; }
+  position: relative;
+  top: 15px;
+  left: 50px;
+  z-index: 9999; }
 
 audio::-webkit-media-controls-panel {
-  background-color: #838e8e !important; }
+  background: #929e9e !important;
+  border: 0 !important;
+  color: white !important;
+  border-radius: 0px !important; }
+  audio::-webkit-media-controls-panel:focus {
+    outline: none !important; }
+
+audio::-webkit-media-controls-mute-button {
+  display: none; }
 
 audio::-webkit-media-controls-play-button {
-  width: 50% !important; }
+  width: 50% !important;
+  color: white !important; }
 
-audio::-webkit-media-controls-timeline-container {
+audio::-webkit-media-controls-timeline {
   display: none !important; }
 
 audio::-webkit-media-controls-timeline-container {
   display: none !important; }
 
-audio::-webkit-media-controls-current-time-display,
-audio::-webkit-media-controls-time-remaining-display {
-  display: none !important; }
-
-.track-list button {
-  display: inline-block;
+audio::-webkit-media-controls-current-time-display {
+  display: inline-block !important;
   position: absolute;
-  left: 2px;
-  margin-left: 10px;
-  color: white;
-  background: transparent !important;
-  padding: 3px 8px;
-  border: 0px !important; }
-  .track-list button:hover {
-    position: absolute;
-    top: 5px;
-    left: 0px;
-    height: 30px;
-    width: 30px;
-    background: url(../assets/play.svg) center center !important;
-    background-size: 95% !important;
-    background-repeat: no-repeat !important;
-    fill: white !important;
-    font-size: 2px !important; }
-  .track-list button svg {
-    fill: white !important; }
+  right: 10px;
+  color: white !important;
+  background-color: transparent; }
+
+audio::-webkit-media-controls-time-remaining-display {
+  display: none; }
+
+audio::-webkit-media-controls-volume-slider-container {
+  display: none !important; }
+
+audio::-webkit-media-controls-seek-back-button,
+audio::-webkit-media-controls-seek-forward-button,
+audio::-webkit-media-controls-fullscreen-button,
+audio::-webkit-media-controls-return-to-realtime-button,
+audio::-webkit-media-controls-toggle-closed-captions-button,
+audio::-webkit-media-controls-return-to-realtime-button,
+audio::-webkit-media-controls-rewind-button,
+audio::-webkit-media-controls-toggle-closed-captions-button,
+audio::-webkit-media-controls-closed-captions-container,
+audio::-webkit-media-controls-closed-captions-track-list,
+audio::-webkit-media-controls-volume-slider {
+  display: none !important; }
 
 .track-list span.track-time {
   display: inline-block;
   position: absolute;
-  right: 14px; }
+  right: 34px;
+  top: 16px;
+  z-index: 999; }
 
 img.card-img-top {
   width: 32%;
@@ -104,13 +130,12 @@ p.card-text.pt-2 {
   background: transparent !important;
   border: 0 !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
-  padding: 0.75rem 3rem !important; }
-  .list-group-item:hover {
-    background: rgba(255, 255, 255, 0.4) !important;
-    border-bottom: 0 !important; }
+  padding: 0 !important; }
 
 span.small-text {
   font-size: 10px;
+  margin-right: 12px !important;
+  line-height: 11px;
   margin-right: 12px !important; }
 
 .card-body {

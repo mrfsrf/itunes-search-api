@@ -9057,10 +9057,30 @@ function millisToMinutesAndSeconds(millis, type) {
 
 
 function playSong(id) {
-  var trackId = id;
+  // const trackId = id;
+
   /*
   Code goes here
   */
+  var player = document.querySelector(".track-".concat(id));
+  console.log(player); //  if(id){ 
+  //     player = document.querySelector(`.track-${id}`);
+  //     console.log(player);
+  //   } else {
+  //     console.log("something is worong");
+  //   }
+  // if(player) {
+  //   stopOtherPlayers();
+  //   player.play()
+  // }
+
+  function stopOtherPlayers() {
+    var players = document.querySelectorAll('.audio-track audio');
+
+    for (var i = 0; i < players.length; i++) {
+      players[i].pause();
+    }
+  }
 }
 
 function songList(songs) {
@@ -9086,31 +9106,13 @@ function songList(songs) {
         var tracksList = document.createElement("li");
         tracksList.classList.add("track-list", 'list-group-item', "list-group-flush");
         totalMilisTime += item.trackTimeMillis;
-        tracksList.innerHTML = "\n          <button class=\"".concat(item.trackId, "\" onclick=\"playSong(").concat(item.trackId, ")\">").concat(songs.results.indexOf(item), "</button>\n          ").concat(item.trackName, "\n          <span class=\"track-time\">").concat(millisToMinutesAndSeconds(item.trackTimeMillis, "song"), "</span><br>\n          ");
-        trackContainer.appendChild(tracksList);
         /*
-        adding all songs preview from the album and appending it to end of card container
+        adding all songs preview from the album
         */
 
-        var previewTrack = document.createElement("audio");
-        previewTrack.classList.add("song-name", "audio-track", "\"track-".concat(item.trackId, "\""));
-        previewTrack.classList.add("audio-track"); // previewTrack.setAttribute("controls", "controls");
+        tracksList.innerHTML = "\n          <span class=\"".concat(item.trackId, " track-number\">").concat(songs.results.indexOf(item), "</span>\n          <span class=\"song-name\">").concat(item.trackName, "</span>\n          <span class=\"track-time\">").concat(millisToMinutesAndSeconds(item.trackTimeMillis, "song"), " /</span>\n          <audio src=\"").concat(item.previewUrl, "\" controls controlslist=\"nodownload\">\n          </audio>\n          "); // <button class="${item.trackId}">${songs.results.indexOf(item)}</button>
 
-        previewTrack.src = "".concat(item.previewUrl);
-        audioSpan.appendChild(previewTrack); // if (i >= item.resultCount-1 || item.trackNumber === (finalTrackNumber / item.discNumber)) {
-        //   const audioSpan = document.createElement("span");
-        //   const trackName = document.createElement("span");
-        //   trackName.classList.add("song-name");
-        //   audioSpan.classList.add("audio-track");
-        //   const previewTrack = document.createElement("audio");
-        //   previewTrack.setAttribute("controls", "controls");
-        //   previewTrack.src = `${item.previewUrl}`;
-        //   trackName.innerHTML = `${item.trackName} Song Preview`;
-        //   audioSpan.appendChild(trackName);
-        //   audioSpan.appendChild(previewTrack)
-        //   cont.querySelector('.card-body').appendChild(audioSpan);
-        // }
-        // i++;
+        trackContainer.appendChild(tracksList);
       }
     });
     console.log("Album ".concat(songs.results[0].collectionName, " and milisecs time: ").concat(millisToMinutesAndSeconds(totalMilisTime, "album")));

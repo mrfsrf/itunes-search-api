@@ -133,13 +133,31 @@ function millisToMinutesAndSeconds(millis, type) {
 /* playing song preview handle */
 
 function playSong(id){
-  const trackId = id;
-    /*
-    Code goes here
-    */
+  // const trackId = id;
+  /*
+  Code goes here
+  */
+  const player = document.querySelector(`.track-${id}`);
+  console.log(player);
+//  if(id){ 
+//     player = document.querySelector(`.track-${id}`);
+//     console.log(player);
+//   } else {
+//     console.log("something is worong");
+//   }
 
+// if(player) {
+//   stopOtherPlayers();
+//   player.play()
+// }
+
+function stopOtherPlayers(){
+  const players = document.querySelectorAll('.audio-track audio');
+  for (let i = 0; i < players.length; i++) {
+    players[i].pause();
   }
-
+}
+}
 
 function songList(songs) {
   let cont_div = document.querySelector(`.a-${songs.results[0].collectionId}`)
@@ -152,6 +170,10 @@ function songList(songs) {
   cont_div.appendChild(trackContainer);
   let finalTrackNumber = "";
   let totalMilisTime = 0;
+
+
+
+
   if (songs.resultCount > 1) {
     // let i = 1;
     songs.results.forEach(
@@ -164,41 +186,26 @@ function songList(songs) {
         else if (item.wrapperType === "track") {
           const tracksList = document.createElement("li");
           tracksList.classList.add("track-list", 'list-group-item', "list-group-flush");
-          totalMilisTime += item.trackTimeMillis;
-          tracksList.innerHTML = 
-          `
-          <button class="${item.trackId}" onclick="playSong(${item.trackId})">${songs.results.indexOf(item)}</button>
-          ${item.trackName}
-          <span class="track-time">${millisToMinutesAndSeconds(item.trackTimeMillis, "song")}</span><br>
-          `;
 
-          trackContainer.appendChild(tracksList);
+
+          totalMilisTime += item.trackTimeMillis;
 
           /*
-          adding all songs preview from the album and appending it to end of card container
+          adding all songs preview from the album
           */
-          const previewTrack = document.createElement("audio");
-          previewTrack.classList.add("song-name", "audio-track", `"track-${item.trackId}"`);
-          previewTrack.classList.add("audio-track");
-            // previewTrack.setAttribute("controls", "controls");
-          previewTrack.src = `${item.previewUrl}`;
-          audioSpan.appendChild(previewTrack);
 
-          // if (i >= item.resultCount-1 || item.trackNumber === (finalTrackNumber / item.discNumber)) {
-          //   const audioSpan = document.createElement("span");
-          //   const trackName = document.createElement("span");
-          //   trackName.classList.add("song-name");
-          //   audioSpan.classList.add("audio-track");
-          //   const previewTrack = document.createElement("audio");
-          //   previewTrack.setAttribute("controls", "controls");
-          //   previewTrack.src = `${item.previewUrl}`;
-          //   trackName.innerHTML = `${item.trackName} Song Preview`;
-          //   audioSpan.appendChild(trackName);
-          //   audioSpan.appendChild(previewTrack)
-          //   cont.querySelector('.card-body').appendChild(audioSpan);
+          tracksList.innerHTML = 
+          `
+          <span class="${item.trackId} track-number">${songs.results.indexOf(item)}</span>
+          <span class="song-name">${item.trackName}</span>
+          <span class="track-time">${millisToMinutesAndSeconds(item.trackTimeMillis, "song")} /</span>
+          <audio src="${item.previewUrl}" controls controlslist="nodownload">
+          </audio>
+          `;
+          // <button class="${item.trackId}">${songs.results.indexOf(item)}</button>
 
-          // }
-          // i++;
+
+          trackContainer.appendChild(tracksList);
         }
       });
       console.log(`Album ${songs.results[0].collectionName} and milisecs time: ${millisToMinutesAndSeconds(totalMilisTime, "album")}`);
