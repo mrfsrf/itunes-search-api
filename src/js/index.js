@@ -86,7 +86,7 @@ function lookUpAlbum(data) {
           // cardHeader.innerHTML= `${item.collectionName}`;
           albumText.innerHTML =
             `
-            <a href="${item.collectionViewUrl}" target="_blank"><br><p>${item.collectionName}</p></a><br>
+            <a href="${item.collectionViewUrl}" target="_blank" class="album-name"><br><p>${item.collectionName}</p></a><br>
             <span class="small-text badge badge-pill badge-warning">$</span><p>${item.collectionPrice}</p><br>
             <span class="small-text badge badge-pill badge-warning">Nr. of tracks</span><p>${item.trackCount}</p><br>
             <span class="small-text badge badge-pill badge-warning">Genre</span><p>${item.primaryGenreName}</p><br>
@@ -113,33 +113,47 @@ function lookUpSongs(id) {
   query(baseUrl);
 }
 
-function millisToMinutesAndSeconds(millis) {
+function millisToMinutesAndSeconds(millis, type) {
   let minutes = Math.floor((millis / (1000 * 60)) % 60);
   let hours = Math.floor((millis / (1000 * 60 * 60)) % 24);
-  hours = (hours < 1) ? "" : `${hours} Hours`;
-  // minutes = (minutes < 10) ?  `${minutes} Minutes` : `${minutes} Minutes`;
-  minutes = `${minutes} Minutes`;
+  let seconds = ((millis % 60000) / 1000).toFixed(0);
 
-
-  // let seconds = ((millis % 60000) / 1000).toFixed(0);
-  return `${hours} ${minutes}`;
+  if (type == "song") {
+    seconds = (seconds < 10) ?  `0${seconds}` : `${seconds}`;
+    return `${minutes}:${seconds}`;
+  } else if (type == "album"){
+    hours = (hours < 1) ? "" : `${hours} Hours`;
+    minutes = `${minutes} Minutes`;
+    return `${hours} ${minutes}`;
+  } else {
+    console.log("Something went wrong. Type is neither song nor album");
+  }
 }  
+
+/* playing song preview handle */
+
+function playSong(id){
+  const trackId = id;
+    /*
+    Code goes here
+    */
+
+  }
+
 
 function songList(songs) {
   let cont_div = document.querySelector(`.a-${songs.results[0].collectionId}`)
-  const trackContainer = document.createElement("span");
-  const tracksListContainer = document.createElement("ol");
-  tracksListContainer.setAttribute("type", "1");
-
-  trackContainer.classList.add('track-container');
-  trackContainer.appendChild(tracksListContainer);
-
-  cont_div.querySelector('.card-text').appendChild(trackContainer);
+  const trackContainer = document.createElement("ul");
+  trackContainer.setAttribute("type", "1");
+  trackContainer.classList.add('track-container', 'list-group');
+  // trackContainer.appendChild(tracksListContainer);
+  const audioSpan = document.createElement("span");
+  audioSpan.classList.add("tracks-preview-container");
+  cont_div.appendChild(trackContainer);
   let finalTrackNumber = "";
-  let totalAlbumTime = "";
   let totalMilisTime = 0;
   if (songs.resultCount > 1) {
-    let i = 1;
+    // let i = 1;
     songs.results.forEach(
       (item) => {
         if (item.wrapperType === "collection" && item.collectionPrice !== undefined) {
@@ -149,46 +163,60 @@ function songList(songs) {
         }
         else if (item.wrapperType === "track") {
           const tracksList = document.createElement("li");
-          tracksList.classList.add("track-list");
+          tracksList.classList.add("track-list", 'list-group-item', "list-group-flush");
           totalMilisTime += item.trackTimeMillis;
-          // tracksList.innerHTML = songs.results.indexOf(item) + '.  ' + `${item.trackName}<br>`;
-          tracksList.innerHTML = `${item.trackName}<br>`;
+          tracksList.innerHTML = 
+          `
+          <button class="${item.trackId}" onclick="playSong(${item.trackId})">${songs.results.indexOf(item)}</button>
+          ${item.trackName}
+          <span class="track-time">${millisToMinutesAndSeconds(item.trackTimeMillis, "song")}</span><br>
+          `;
 
-          //${item.trackNumber}.
-          let cont = document.querySelector(`.a-${songs.results[0].collectionId}`);
-          // cont.querySelector('.track-container').appendChild(tracksList);
-          tracksListContainer.appendChild(tracksList);
+          trackContainer.appendChild(tracksList);
 
-          if (i >= item.resultCount-1 || item.trackNumber === (finalTrackNumber / item.discNumber)) {
-            const audioSpan = document.createElement("span");
-            const trackName = document.createElement("span");
-            trackName.classList.add("song-name");
-            audioSpan.classList.add("audio-track");
-            const previewTrack = document.createElement("audio");
-            previewTrack.setAttribute("controls", "controls");
-            previewTrack.src = `${item.previewUrl}`;
-            trackName.innerHTML = `${item.trackName} Song Preview`;
-            audioSpan.appendChild(trackName);
-            audioSpan.appendChild(previewTrack)
-            cont.querySelector('.card-body').appendChild(audioSpan);
+          /*
+          adding all songs preview from the album and appending it to end of card container
+          */
+          const previewTrack = document.createElement("audio");
+          previewTrack.classList.add("song-name", "audio-track", `"track-${item.trackId}"`);
+          previewTrack.classList.add("audio-track");
+            // previewTrack.setAttribute("controls", "controls");
+          previewTrack.src = `${item.previewUrl}`;
+          audioSpan.appendChild(previewTrack);
 
-          }
-          i++;
+          // if (i >= item.resultCount-1 || item.trackNumber === (finalTrackNumber / item.discNumber)) {
+          //   const audioSpan = document.createElement("span");
+          //   const trackName = document.createElement("span");
+          //   trackName.classList.add("song-name");
+          //   audioSpan.classList.add("audio-track");
+          //   const previewTrack = document.createElement("audio");
+          //   previewTrack.setAttribute("controls", "controls");
+          //   previewTrack.src = `${item.previewUrl}`;
+          //   trackName.innerHTML = `${item.trackName} Song Preview`;
+          //   audioSpan.appendChild(trackName);
+          //   audioSpan.appendChild(previewTrack)
+          //   cont.querySelector('.card-body').appendChild(audioSpan);
+
+          // }
+          // i++;
         }
       });
-      console.log(`Album ${songs.results[0].collectionName} and milisecs time: ${millisToMinutesAndSeconds(totalMilisTime)}`);
+      console.log(`Album ${songs.results[0].collectionName} and milisecs time: ${millisToMinutesAndSeconds(totalMilisTime, "album")}`);
       const albumTime = document.createElement("span");
-      albumTime.innerHTML = `<span class="small-text badge badge-pill badge-warning ">Total time</span><p class="pb-3">${millisToMinutesAndSeconds(totalMilisTime)}</p><br>`;
-      trackContainer.prepend(albumTime);
+      albumTime.innerHTML = `<span class="small-text badge badge-pill badge-warning ">Total time</span><p class="pb-3">${millisToMinutesAndSeconds(totalMilisTime, "album")}</p><br>`;
+      cont_div.querySelector('.card-text').appendChild(albumTime);
       totalMilisTime = 0;
 
-      } else {
+    } else {
     const tracksList = document.createElement("span");
     tracksList.classList.add("track-list");
     tracksList.innerHTML = "---";
     let cont = document.querySelector(`.a-${songs.results[0].collectionId}`);
     cont.querySelector('.track-container').previousElementSibling.appendChild(tracksList);
+
   }
+      // appending audio container at the end
+      cont_div.querySelector('.card-body').appendChild(audioSpan);
 }
 ///
 

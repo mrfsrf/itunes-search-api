@@ -6,26 +6,24 @@ body {
 }
 
 .jumbotron {
-  background-color: #FDE86B;
+  background-color: #fde86b;
   // background-color: #43AB8D;
 }
 
 .badge-warning {
-  background-color: #FDE86B!important;
-
+  background-color: #fde86b !important;
 }
 .card {
-  min-width: 220px!important;
-  max-width: 220px!important;
-  border: 0px!important;
-  background: transparent!important;
-  border-bottom: 2px solid black!important;
+  min-width: 290px !important;
+  max-width: 2290px !important;
+  border: 0px !important;
+  background: transparent !important;
+  border-bottom: 2px solid black !important;
   // flex-direction: row!important;
-
 }
 
 span.track-container {
-  background-color: rgba(0, 0, 0, .1);
+  background-color: rgba(0, 0, 0, 0.1);
   display: inline-block;
   padding: 10px;
   border-radius: 8px;
@@ -33,15 +31,15 @@ span.track-container {
   margin: 0 auto;
 
   ol {
-    padding-inline-start: 22px!important;
+    padding-inline-start: 22px !important;
   }
 }
 
 audio {
-    // filter: sepia(70%) saturate(10%) grayscale(1) contrast(90%) invert(20%);
-    width:90%;
-    // transform: scale3d(.8, .8, .8);
- // background-color: #95B9C7;
+  // filter: sepia(70%) saturate(10%) grayscale(1) contrast(90%) invert(20%);
+  width: 90%;
+  // transform: scale3d(.8, .8, .8);
+  // background-color: #95B9C7;
 }
 
 span.song-name {
@@ -56,35 +54,68 @@ span.song-name {
   text-align: center;
 }
 
-audio::-webkit-media-controls-panel{
-background-color: #838E8E!important;
+audio::-webkit-media-controls-panel {
+  background-color: #838e8e !important;
 }
 
 // audio::-webkit-media-controls-mute-button
 
-audio::-webkit-media-controls-play-button{
-  width: 50%!important;
-
+audio::-webkit-media-controls-play-button {
+  width: 50% !important;
 }
 
-audio::-webkit-media-controls-timeline-container{
+audio::-webkit-media-controls-timeline-container {
   // font-size: 10px!important;
   // background-color: red!important;
   // color: white;
-  display: none!important;
-
+  display: none !important;
 }
 
-audio::-webkit-media-controls-timeline-container{
-  display: none!important;
+audio::-webkit-media-controls-timeline-container {
+  display: none !important;
 }
 
-
-audio::-webkit-media-controls-current-time-display , audio::-webkit-media-controls-time-remaining-display {
-  display: none!important;
-
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+  display: none !important;
 }
 
+.track-list {
+  button {
+    display: inline-block;
+    position: absolute;
+    left: 2px;
+    margin-left: 10px;
+    color: white;
+    background: transparent !important;
+    padding: 3px 8px;
+    border: 0px !important;
+
+    &:hover {
+    position: absolute;
+    top: 5px;
+    left: 0px;
+    height: 30px;
+    width: 30px;
+    background: url(../assets/play.svg) center center !important;
+    background-size: 95%!important;
+    background-repeat: no-repeat!important;
+    fill: white!important;
+    font-size: 2px!important;
+    }
+    svg {
+      fill: white!important;
+    }
+  }
+  span.track-time {
+    display: inline-block;
+    position: absolute;
+    right: 14px;
+  }
+}
+// .track-container ul {
+//   list-style-type: decimal!important;
+// }
 
 // audio::-webkit-media-controls-volume-slider-container
 
@@ -102,21 +133,45 @@ audio::-webkit-media-controls-current-time-display , audio::-webkit-media-contro
 
 // audio::-webkit-media-controls-toggle-closed-captions-button
 
-
-
 img.card-img-top {
   // width: 180px!important;
   // height: auto;
-  width: 80%;
-  margin: 0 auto;
+  width: 32%;
   margin-top: 10px;
-  border-radius: 50%!important
+  border-radius: 50% !important;
+  filter: grayscale(100%);
+  margin-left: 1.25rem !important;
+}
 
+p.card-text.pt-2 {
+  line-height: initial;
+}
+
+.album-name {
+    display: inline-block;
+    margin-bottom: 10px;
+
+  p {
+    font-size: 16px !important;
+    letter-spacing: 0.08em;
+    color:#fde86b !important;
+  }
+}
+.list-group-item {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+  padding: 0.75rem 3rem !important;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.4) !important;
+    border-bottom: 0 !important;
+  }
 }
 
 span.small-text {
   font-size: 10px;
-  margin-right: 12px!important;
+  margin-right: 12px !important;
   // display: inline-block;
   // margin: 0 !important;
   // padding-bottom: 0;
@@ -124,36 +179,37 @@ span.small-text {
   // margin-bottom: 30px;
 }
 .card-body {
-  padding: 0 0 0 1.25rem!important;
+  padding: 0 0 0 1.25rem !important;
 }
 .card-text {
   a {
     color: white;
     p {
-      padding-bottom: 2px!important;
-    // border-bottom: 2px solid black!important;
-    display: inline-block!important;
-    word-break: break-word;
-    text-decoration: underline!important;
-
+      padding-bottom: 2px !important;
+      // border-bottom: 2px solid black!important;
+      display: inline-block !important;
+      word-break: break-word;
+      text-decoration: underline !important;
     }
   }
   p {
-    margin-top: .2rem!important;
+    margin-top: 0.2rem !important;
     margin-bottom: 6px !important;
-    font-size: .8em;
+    font-size: 0.8em;
     font-weight: bold;
     display: inline-block;
-    color:white;
-
+    color: white;
   }
 }
-.track-list{
-  font-size: 11px!important;
-  color:white;
+
+.track-list {
+  font-size: 13px !important;
+  color: white;
   line-height: 16px;
+  // display:list-item!important; //ovo stavitit kad vratim na ol !!!!
   /* margin-top: 5px; */
   // display: table-row;
+  cursor: pointer;
 }
 
 // .card-text p:last-of-type {
@@ -161,5 +217,5 @@ span.small-text {
 // }
 
 .border-bottom {
-  border-bottom: 2px solid black!important;
+  border-bottom: 2px solid black !important;
 }
