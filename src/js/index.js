@@ -4,14 +4,16 @@ const urlParams = require('url').URLSearchParams;
 require('url-search-params-polyfill');
 
 const https = require('https');
-let searchString = "queen";
+let searchString = "the misfits";
 const cardGroup = document.querySelector('.card-group');
 
 //add event listener on the search button
 document.querySelector(".search-button").addEventListener('click', newSearch);
 
-//https://itunes.apple.com/search?term=${searchString}&media=music&limit=20
-//https://itunes.apple.com/lookup?id=909253&entity=album
+//https://itunes.apple.com/search?term=${searchString}&media=music&limit=20 //artist
+//https://itunes.apple.com/lookup?id=120199&entity=album // get albums
+//https://itunes.apple.com/lookup?id=1468202477&entity=song  // songs from albums
+// album time = 643128 * trackCount * discCount
 
 let baseUrl = new URL('http://example.com'); // we need to define or error
 let parameters = new URLSearchParams([
@@ -53,7 +55,7 @@ function lookUpArtist(artistId) {
   let newParams = new URLSearchParams([
     ['id', artistId],
     ['entity', 'album'],
-    ['sort', 'recent']
+    // ['sort', 'recent']
   ]);
   baseUrl.pathname = '/lookup'
   baseUrl.search = newParams.toString();
@@ -111,30 +113,53 @@ function lookUpSongs(id) {
   query(baseUrl);
 }
 
+function millisToMinutesAndSeconds(millis) {
+  let minutes = Math.floor((millis / (1000 * 60)) % 60);
+  let hours = Math.floor((millis / (1000 * 60 * 60)) % 24);
+  hours = (hours < 1) ? "" : `${hours} Hours`;
+  // minutes = (minutes < 10) ?  `${minutes} Minutes` : `${minutes} Minutes`;
+  minutes = `${minutes} Minutes`;
+
+
+  // let seconds = ((millis % 60000) / 1000).toFixed(0);
+  return `${hours} ${minutes}`;
+}  
+
 function songList(songs) {
   let cont_div = document.querySelector(`.a-${songs.results[0].collectionId}`)
   const trackContainer = document.createElement("span");
+  const tracksListContainer = document.createElement("ol");
+  tracksListContainer.setAttribute("type", "1");
+
   trackContainer.classList.add('track-container');
+  trackContainer.appendChild(tracksListContainer);
+
   cont_div.querySelector('.card-text').appendChild(trackContainer);
   let finalTrackNumber = "";
+  let totalAlbumTime = "";
+  let totalMilisTime = 0;
   if (songs.resultCount > 1) {
     let i = 1;
-    songs.results.slice(0, 14).forEach(
+    songs.results.forEach(
       (item) => {
         if (item.wrapperType === "collection" && item.collectionPrice !== undefined) {
-          finalTrackNumber = item.trackCount;
+          // finalTrackNumber = item.trackCount;
+          finalTrackNumber = item.resultCount-1;
           return finalTrackNumber;
         }
         else if (item.wrapperType === "track") {
-          const tracksList = document.createElement("span");
+          const tracksList = document.createElement("li");
           tracksList.classList.add("track-list");
+          totalMilisTime += item.trackTimeMillis;
+          // tracksList.innerHTML = songs.results.indexOf(item) + '.  ' + `${item.trackName}<br>`;
+          tracksList.innerHTML = `${item.trackName}<br>`;
 
-          tracksList.innerHTML = `${item.trackNumber}.  ${item.trackName}<br>`;
-          //
+          //${item.trackNumber}.
           let cont = document.querySelector(`.a-${songs.results[0].collectionId}`);
-          cont.querySelector('.track-container').appendChild(tracksList);
+          // cont.querySelector('.track-container').appendChild(tracksList);
+          tracksListContainer.appendChild(tracksList);
 
-          if (i >= 13 || item.trackNumber === (finalTrackNumber / item.discNumber)) {
+          if (i >= item.resultCount-1 || item.trackNumber === (finalTrackNumber / item.discNumber)) {
             const audioSpan = document.createElement("span");
             const trackName = document.createElement("span");
             trackName.classList.add("song-name");
@@ -151,19 +176,31 @@ function songList(songs) {
           i++;
         }
       });
-  } else {
+      console.log(`Album ${songs.results[0].collectionName} and milisecs time: ${millisToMinutesAndSeconds(totalMilisTime)}`);
+      const albumTime = document.createElement("span");
+      albumTime.innerHTML = `<span class="small-text badge badge-pill badge-warning ">Total time</span><p class="pb-3">${millisToMinutesAndSeconds(totalMilisTime)}</p><br>`;
+      trackContainer.prepend(albumTime);
+      totalMilisTime = 0;
+
+      } else {
     const tracksList = document.createElement("span");
     tracksList.classList.add("track-list");
     tracksList.innerHTML = "---";
     let cont = document.querySelector(`.a-${songs.results[0].collectionId}`);
-    cont.querySelector('.track-container').appendChild(tracksList);
+    cont.querySelector('.track-container').previousElementSibling.appendChild(tracksList);
   }
 }
-
 ///
 
 function query(url) {
   https.get(format(url), (res) => {
+    // let headerContent =  res.headers['content-type'];
+    // let headerAccept = res.headers['Accept'];
+    // console.log(`headers: Content-type: ${headerContent} and Accept: ${headerAccept}`);
+    // console.log('statusCode:', res.statusCode);
+    // console.log('headers:', res.headers);
+  
+
     let data = "";
     res.on('data', (d) => {
       data += d;

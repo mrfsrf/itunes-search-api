@@ -21,6 +21,8 @@ span.track-container {
   border-radius: 8px;
   width: 100%;
   margin: 0 auto; }
+  span.track-container ol {
+    padding-inline-start: 22px !important; }
 
 audio {
   width: 90%; }
@@ -84,8 +86,7 @@ span.small-text {
   font-size: 11px !important;
   color: white;
   line-height: 16px;
-  /* margin-top: 5px; */
-  display: table-row; }
+  /* margin-top: 5px; */ }
 
 .border-bottom {
   border-bottom: 2px solid black !important; }

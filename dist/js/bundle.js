@@ -8961,11 +8961,13 @@ require('url-search-params-polyfill');
 
 var https = require('https');
 
-var searchString = "queen";
+var searchString = "the misfits";
 var cardGroup = document.querySelector('.card-group'); //add event listener on the search button
 
-document.querySelector(".search-button").addEventListener('click', newSearch); //https://itunes.apple.com/search?term=${searchString}&media=music&limit=20
-//https://itunes.apple.com/lookup?id=909253&entity=album
+document.querySelector(".search-button").addEventListener('click', newSearch); //https://itunes.apple.com/search?term=${searchString}&media=music&limit=20 //artist
+//https://itunes.apple.com/lookup?id=120199&entity=album // get albums
+//https://itunes.apple.com/lookup?id=1468202477&entity=song  // songs from albums
+// album time = 643128 * trackCount * discCount
 
 var baseUrl = new URL('http://example.com'); // we need to define or error
 
@@ -8993,7 +8995,8 @@ function newSearch() {
 document.querySelector('.current-artist').innerHTML = searchString;
 
 function lookUpArtist(artistId) {
-  var newParams = new URLSearchParams([['id', artistId], ['entity', 'album'], ['sort', 'recent']]);
+  var newParams = new URLSearchParams([['id', artistId], ['entity', 'album'] // ['sort', 'recent']
+  ]);
   baseUrl.pathname = '/lookup';
   baseUrl.search = newParams.toString();
   query(baseUrl);
@@ -9034,28 +9037,47 @@ function lookUpSongs(id) {
   query(baseUrl);
 }
 
+function millisToMinutesAndSeconds(millis) {
+  var minutes = Math.floor(millis / (1000 * 60) % 60);
+  var hours = Math.floor(millis / (1000 * 60 * 60) % 24);
+  hours = hours < 1 ? "" : "".concat(hours, " Hours"); // minutes = (minutes < 10) ?  `${minutes} Minutes` : `${minutes} Minutes`;
+
+  minutes = "".concat(minutes, " Minutes"); // let seconds = ((millis % 60000) / 1000).toFixed(0);
+
+  return "".concat(hours, " ").concat(minutes);
+}
+
 function songList(songs) {
   var cont_div = document.querySelector(".a-".concat(songs.results[0].collectionId));
   var trackContainer = document.createElement("span");
+  var tracksListContainer = document.createElement("ol");
+  tracksListContainer.setAttribute("type", "1");
   trackContainer.classList.add('track-container');
+  trackContainer.appendChild(tracksListContainer);
   cont_div.querySelector('.card-text').appendChild(trackContainer);
   var finalTrackNumber = "";
+  var totalAlbumTime = "";
+  var totalMilisTime = 0;
 
   if (songs.resultCount > 1) {
     var i = 1;
-    songs.results.slice(0, 14).forEach(function (item) {
+    songs.results.forEach(function (item) {
       if (item.wrapperType === "collection" && item.collectionPrice !== undefined) {
-        finalTrackNumber = item.trackCount;
+        // finalTrackNumber = item.trackCount;
+        finalTrackNumber = item.resultCount - 1;
         return finalTrackNumber;
       } else if (item.wrapperType === "track") {
-        var tracksList = document.createElement("span");
+        var tracksList = document.createElement("li");
         tracksList.classList.add("track-list");
-        tracksList.innerHTML = "".concat(item.trackNumber, ".  ").concat(item.trackName, "<br>"); //
+        totalMilisTime += item.trackTimeMillis; // tracksList.innerHTML = songs.results.indexOf(item) + '.  ' + `${item.trackName}<br>`;
 
-        var cont = document.querySelector(".a-".concat(songs.results[0].collectionId));
-        cont.querySelector('.track-container').appendChild(tracksList);
+        tracksList.innerHTML = "".concat(item.trackName, "<br>"); //${item.trackNumber}.
 
-        if (i >= 13 || item.trackNumber === finalTrackNumber / item.discNumber) {
+        var cont = document.querySelector(".a-".concat(songs.results[0].collectionId)); // cont.querySelector('.track-container').appendChild(tracksList);
+
+        tracksListContainer.appendChild(tracksList);
+
+        if (i >= item.resultCount - 1 || item.trackNumber === finalTrackNumber / item.discNumber) {
           var audioSpan = document.createElement("span");
           var trackName = document.createElement("span");
           trackName.classList.add("song-name");
@@ -9072,18 +9094,28 @@ function songList(songs) {
         i++;
       }
     });
+    console.log("Album ".concat(songs.results[0].collectionName, " and milisecs time: ").concat(millisToMinutesAndSeconds(totalMilisTime)));
+    var albumTime = document.createElement("span");
+    albumTime.innerHTML = "<span class=\"small-text badge badge-pill badge-warning \">Total time</span><p class=\"pb-3\">".concat(millisToMinutesAndSeconds(totalMilisTime), "</p><br>");
+    trackContainer.prepend(albumTime);
+    totalMilisTime = 0;
   } else {
     var tracksList = document.createElement("span");
     tracksList.classList.add("track-list");
     tracksList.innerHTML = "---";
     var cont = document.querySelector(".a-".concat(songs.results[0].collectionId));
-    cont.querySelector('.track-container').appendChild(tracksList);
+    cont.querySelector('.track-container').previousElementSibling.appendChild(tracksList);
   }
 } ///
 
 
 function query(url) {
   https.get(format(url), function (res) {
+    // let headerContent =  res.headers['content-type'];
+    // let headerAccept = res.headers['Accept'];
+    // console.log(`headers: Content-type: ${headerContent} and Accept: ${headerAccept}`);
+    // console.log('statusCode:', res.statusCode);
+    // console.log('headers:', res.headers);
     var data = "";
     res.on('data', function (d) {
       data += d;
