@@ -67,7 +67,8 @@ input#search-box {
   position: absolute;
   right: 20px;
   vertical-align: middle;
-  top: 3px; }
+  top: 3px;
+  z-index: 999999 !important; }
   .search-bttn .search-button:after {
     content: "";
     display: block;

@@ -89,6 +89,7 @@ input#search-box {
     right: 20px;
     vertical-align: middle;
     top: 3px;
+    z-index: 999999!important;
 
     &:after {
       // content:"\f002";
