@@ -54,6 +54,35 @@ span.song-name {
   left: 50px;
   z-index: 9999; }
 
+input#search-box {
+  border: 0 !important;
+  border-radius: 20px; }
+
+.search-bttn .search-button {
+  border: 0px;
+  width: 30px;
+  height: 30px;
+  background-color: #929e9e !important;
+  border-radius: 50% !important;
+  position: absolute;
+  right: 20px;
+  vertical-align: middle;
+  top: 3px; }
+  .search-bttn .search-button:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 60px;
+    background: url(../assets/search.svg) center center;
+    background-repeat: no-repeat;
+    background-size: 70%;
+    position: absolute;
+    right: 1px; }
+
+.search-bttn svg {
+  display: inline-block;
+  fill: white !important; }
+
 audio::-webkit-media-controls-panel {
   background: #929e9e !important;
   border: 0 !important;

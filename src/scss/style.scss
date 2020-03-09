@@ -39,17 +39,16 @@ span.track-container {
 audio {
   // filter: sepia(70%) saturate(10%) grayscale(1) contrast(90%) invert(20%);
   width: 100%;
-  height: 16px!important;
-  border: 0px!important;
+  height: 16px !important;
+  border: 0px !important;
   // transform: scale3d(.8, .8, .8);
   // background-color: #95B9C7;
   position: relative;
   left: 8px;
 }
 
-
 audio:focus {
-  outline: none!important;
+  outline: none !important;
 }
 
 span.track-number {
@@ -74,23 +73,62 @@ span.song-name {
   z-index: 9999;
 }
 
-audio::-webkit-media-controls-panel {
-  background: #929e9e !important;
-  border: 0!important;
-  color: white!important;
-  border-radius: 0px!important;
-  &:focus {
-    outline: none!important;
+input#search-box {
+  border: 0 !important;
+  border-radius: 20px;
+}
+
+.search-bttn {
+  .search-button {
+    border: 0px;
+    width: 30px;
+    height: 30px;
+    background-color: #929e9e !important;
+    border-radius: 50% !important;
+    position: absolute;
+    right: 20px;
+    vertical-align: middle;
+    top: 3px;
+
+    &:after {
+      // content:"\f002";
+      content: "";
+      display: block;
+      width: 100%;
+      height: 60px;
+      background: url(../assets/search.svg) center center;
+      background-repeat: no-repeat;
+      background-size: 70%;
+      position: absolute;
+      right: 1px;
+     
+    }
+
+  }
+
+  svg {
+    display: inline-block;
+    fill: white!important
   }
 }
 
- audio::-webkit-media-controls-mute-button {
-   display: none;
- }
+audio::-webkit-media-controls-panel {
+  background: #929e9e !important;
+  border: 0 !important;
+  color: white !important;
+  border-radius: 0px !important;
+  &:focus {
+    outline: none !important;
+  }
+}
+
+audio::-webkit-media-controls-mute-button {
+  display: none;
+}
 
 audio::-webkit-media-controls-play-button {
   width: 50% !important;
-  color: white!important;
+  color: white !important;
 }
 
 // audio::-webkit-media-controls-timeline-container {
@@ -99,30 +137,29 @@ audio::-webkit-media-controls-play-button {
 //   // color: white;
 //   // display: none !important;
 // }
-audio::-webkit-media-controls-timeline{
-  display: none!important;
+audio::-webkit-media-controls-timeline {
+  display: none !important;
 }
 audio::-webkit-media-controls-timeline-container {
-  display: none!important;
+  display: none !important;
 }
 audio::-webkit-media-controls-current-time-display {
   display: inline-block !important;
   position: absolute;
-  right:10px;
-  color: white!important;
+  right: 10px;
+  color: white !important;
   background-color: transparent;
 }
 audio::-webkit-media-controls-time-remaining-display {
-display: none;
+  display: none;
 }
 
 // audio::-webkit-media-controls-current-time-display{
 //   display: none!important;
 // }
 
-
-audio::-webkit-media-controls-volume-slider-container{
-  display: none!important;
+audio::-webkit-media-controls-volume-slider-container {
+  display: none !important;
 }
 
 audio::-webkit-media-controls-seek-back-button,
@@ -135,12 +172,11 @@ audio::-webkit-media-controls-rewind-button,
 audio::-webkit-media-controls-toggle-closed-captions-button,
 audio::-webkit-media-controls-closed-captions-container,
 audio::-webkit-media-controls-closed-captions-track-list,
-audio::-webkit-media-controls-volume-slider{
-  display: none!important;
+audio::-webkit-media-controls-volume-slider {
+  display: none !important;
 }
 
 .track-list {
-
   span.track-time {
     display: inline-block;
     position: absolute;
@@ -182,7 +218,7 @@ p.card-text.pt-2 {
   border: 0 !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
   // padding: 0.75rem 3rem !important;
-  padding: 0!important;
+  padding: 0 !important;
 
   // &:hover {
   //   background: rgba(255, 255, 255, 0.4) !important;
