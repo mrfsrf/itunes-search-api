@@ -9014,15 +9014,16 @@ function lookUpAlbum(data) {
         var albumText = document.createElement("p");
         var cardContainer = document.createElement("div");
         cardContainer.classList.add("card", "mr-3", "mb-3", "pb-3", "a-" + item.collectionId);
-        albumBody.classList.add("card-body");
+        albumBody.classList.add("card-body", "align-top");
         albumText.classList.add("card-text", "pt-2");
         albumImage.classList.add("card-img-top");
         albumImage.src = "".concat(item.artworkUrl100); // cardHeader.innerHTML= `${item.collectionName}`;
 
         albumText.innerHTML = "\n            <a href=\"".concat(item.collectionViewUrl, "\" target=\"_blank\" class=\"album-name\"><br><p>").concat(item.collectionName, "</p></a><br>\n            <span class=\"small-text badge badge-pill badge-warning\">$</span><p>").concat(item.collectionPrice, "</p><br>\n            <span class=\"small-text badge badge-pill badge-warning\">Nr. of tracks</span><p>").concat(item.trackCount, "</p><br>\n            <span class=\"small-text badge badge-pill badge-warning\">Genre</span><p>").concat(item.primaryGenreName, "</p><br>\n            <span class=\"small-text badge badge-pill badge-warning \">Release date</span><p class=\"pb-3\">").concat(item.releaseDate.slice(0, 10), "</p><br>\n            "); //
 
-        cardGroup.appendChild(cardContainer);
-        cardContainer.appendChild(albumImage);
+        cardGroup.appendChild(cardContainer); // cardContainer.appendChild(albumImage);
+
+        albumBody.appendChild(albumImage);
         cardContainer.appendChild(albumBody);
         albumBody.appendChild(albumText);
         lookUpSongs(item.collectionId);

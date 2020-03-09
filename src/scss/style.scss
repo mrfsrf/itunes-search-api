@@ -15,8 +15,9 @@ body {
   background-color: #fde86b !important;
 }
 .card {
-  min-width: 290px !important;
-  max-width: 2290px !important;
+  // needs fixing !!!
+  min-width: 490px !important;
+  max-width: 490px !important;
   border: 0px !important;
   background: transparent !important;
   border-bottom: 2px solid black !important;
@@ -98,6 +99,7 @@ input#search-box {
       width: 100%;
       height: 60px;
       background: url(../assets/search.svg) center center;
+      -webkit-filter: invert(100%); // convert to white -- hack
       background-repeat: no-repeat;
       background-size: 70%;
       position: absolute;
@@ -129,15 +131,9 @@ audio::-webkit-media-controls-mute-button {
 
 audio::-webkit-media-controls-play-button {
   width: 50% !important;
-  color: white !important;
+  -webkit-filter: invert(100%); // convert to white -- hack
 }
 
-// audio::-webkit-media-controls-timeline-container {
-//   font-size: 10px!important;
-//   background-color: red!important;
-//   // color: white;
-//   // display: none !important;
-// }
 audio::-webkit-media-controls-timeline {
   display: none !important;
 }
@@ -191,17 +187,20 @@ audio::-webkit-media-controls-volume-slider {
 // }
 
 img.card-img-top {
-  // width: 180px!important;
-  // height: auto;
-  width: 32%;
+  width: 25%;
   margin-top: 10px;
   border-radius: 50% !important;
   filter: grayscale(100%);
-  margin-left: 1.25rem !important;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 30px;
+  margin-right: 30px;
+  // margin-left: 1.25rem !important;
 }
 
 p.card-text.pt-2 {
   line-height: initial;
+  display: inline-block;
 }
 
 .album-name {

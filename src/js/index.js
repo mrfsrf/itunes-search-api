@@ -78,7 +78,7 @@ function lookUpAlbum(data) {
           const cardContainer = document.createElement("div");
           cardContainer.classList.add("card", "mr-3", "mb-3", "pb-3", "a-" + item.collectionId);
 
-          albumBody.classList.add("card-body");
+          albumBody.classList.add("card-body", "align-top");
           albumText.classList.add("card-text", "pt-2");
 
           albumImage.classList.add("card-img-top");
@@ -94,7 +94,8 @@ function lookUpAlbum(data) {
             `
           //
           cardGroup.appendChild(cardContainer);
-          cardContainer.appendChild(albumImage);
+          // cardContainer.appendChild(albumImage);
+          albumBody.appendChild(albumImage);
           cardContainer.appendChild(albumBody);
           albumBody.appendChild(albumText);
           lookUpSongs(item.collectionId);
