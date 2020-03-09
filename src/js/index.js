@@ -4,14 +4,16 @@ const urlParams = require('url').URLSearchParams;
 require('url-search-params-polyfill');
 
 const https = require('https');
-let searchString = "queen";
+let searchString = "the misfits";
 const cardGroup = document.querySelector('.card-group');
 
 //add event listener on the search button
 document.querySelector(".search-button").addEventListener('click', newSearch);
 
-//https://itunes.apple.com/search?term=${searchString}&media=music&limit=20
-//https://itunes.apple.com/lookup?id=909253&entity=album
+//https://itunes.apple.com/search?term=${searchString}&media=music&limit=20 //artist
+//https://itunes.apple.com/lookup?id=120199&entity=album // get albums
+//https://itunes.apple.com/lookup?id=1468202477&entity=song  // songs from albums
+// album time = 643128 * trackCount * discCount
 
 let baseUrl = new URL('http://example.com'); // we need to define or error
 let parameters = new URLSearchParams([
@@ -53,7 +55,7 @@ function lookUpArtist(artistId) {
   let newParams = new URLSearchParams([
     ['id', artistId],
     ['entity', 'album'],
-    ['sort', 'recent']
+    // ['sort', 'recent']
   ]);
   baseUrl.pathname = '/lookup'
   baseUrl.search = newParams.toString();
@@ -76,7 +78,7 @@ function lookUpAlbum(data) {
           const cardContainer = document.createElement("div");
           cardContainer.classList.add("card", "mr-3", "mb-3", "pb-3", "a-" + item.collectionId);
 
-          albumBody.classList.add("card-body");
+          albumBody.classList.add("card-body", "align-top");
           albumText.classList.add("card-text", "pt-2");
 
           albumImage.classList.add("card-img-top");
@@ -84,7 +86,7 @@ function lookUpAlbum(data) {
           // cardHeader.innerHTML= `${item.collectionName}`;
           albumText.innerHTML =
             `
-            <a href="${item.collectionViewUrl}" target="_blank"><br><p>${item.collectionName}</p></a><br>
+            <a href="${item.collectionViewUrl}" target="_blank" class="album-name"><br><p>${item.collectionName}</p></a><br>
             <span class="small-text badge badge-pill badge-warning">$</span><p>${item.collectionPrice}</p><br>
             <span class="small-text badge badge-pill badge-warning">Nr. of tracks</span><p>${item.trackCount}</p><br>
             <span class="small-text badge badge-pill badge-warning">Genre</span><p>${item.primaryGenreName}</p><br>
@@ -92,7 +94,8 @@ function lookUpAlbum(data) {
             `
           //
           cardGroup.appendChild(cardContainer);
-          cardContainer.appendChild(albumImage);
+          // cardContainer.appendChild(albumImage);
+          albumBody.appendChild(albumImage);
           cardContainer.appendChild(albumBody);
           albumBody.appendChild(albumText);
           lookUpSongs(item.collectionId);
@@ -111,59 +114,129 @@ function lookUpSongs(id) {
   query(baseUrl);
 }
 
+function millisToMinutesAndSeconds(millis, type) {
+  let minutes = Math.floor((millis / (1000 * 60)) % 60);
+  let hours = Math.floor((millis / (1000 * 60 * 60)) % 24);
+  let seconds = ((millis % 60000) / 1000).toFixed(0);
+
+  if (type == "song") {
+    seconds = (seconds < 10) ?  `0${seconds}` : `${seconds}`;
+    return `${minutes}:${seconds}`;
+  } else if (type == "album"){
+    hours = (hours < 1) ? "" : `${hours} Hours`;
+    minutes = `${minutes} Minutes`;
+    return `${hours} ${minutes}`;
+  } else {
+    console.log("Something went wrong. Type is neither song nor album");
+  }
+}  
+
+/* playing song preview handle */
+
+function playSong(id){
+  // const trackId = id;
+  /*
+  Code goes here
+  */
+  const player = document.querySelector(`.track-${id}`);
+  console.log(player);
+//  if(id){ 
+//     player = document.querySelector(`.track-${id}`);
+//     console.log(player);
+//   } else {
+//     console.log("something is worong");
+//   }
+
+// if(player) {
+//   stopOtherPlayers();
+//   player.play()
+// }
+
+function stopOtherPlayers(){
+  const players = document.querySelectorAll('.audio-track audio');
+  for (let i = 0; i < players.length; i++) {
+    players[i].pause();
+  }
+}
+}
+
 function songList(songs) {
   let cont_div = document.querySelector(`.a-${songs.results[0].collectionId}`)
-  const trackContainer = document.createElement("span");
-  trackContainer.classList.add('track-container');
-  cont_div.querySelector('.card-text').appendChild(trackContainer);
+  const trackContainer = document.createElement("ul");
+  trackContainer.setAttribute("type", "1");
+  trackContainer.classList.add('track-container', 'list-group');
+  // trackContainer.appendChild(tracksListContainer);
+  const audioSpan = document.createElement("span");
+  audioSpan.classList.add("tracks-preview-container");
+  cont_div.appendChild(trackContainer);
   let finalTrackNumber = "";
+  let totalMilisTime = 0;
+
+
+
+
   if (songs.resultCount > 1) {
-    let i = 1;
-    songs.results.slice(0, 14).forEach(
+    // let i = 1;
+    songs.results.forEach(
       (item) => {
         if (item.wrapperType === "collection" && item.collectionPrice !== undefined) {
-          finalTrackNumber = item.trackCount;
+          // finalTrackNumber = item.trackCount;
+          finalTrackNumber = item.resultCount-1;
           return finalTrackNumber;
         }
         else if (item.wrapperType === "track") {
-          const tracksList = document.createElement("span");
-          tracksList.classList.add("track-list");
+          const tracksList = document.createElement("li");
+          tracksList.classList.add("track-list", 'list-group-item', "list-group-flush");
 
-          tracksList.innerHTML = `${item.trackNumber}.  ${item.trackName}<br>`;
-          //
-          let cont = document.querySelector(`.a-${songs.results[0].collectionId}`);
-          cont.querySelector('.track-container').appendChild(tracksList);
 
-          if (i >= 13 || item.trackNumber === (finalTrackNumber / item.discNumber)) {
-            const audioSpan = document.createElement("span");
-            const trackName = document.createElement("span");
-            trackName.classList.add("song-name");
-            audioSpan.classList.add("audio-track");
-            const previewTrack = document.createElement("audio");
-            previewTrack.setAttribute("controls", "controls");
-            previewTrack.src = `${item.previewUrl}`;
-            trackName.innerHTML = `${item.trackName} Song Preview`;
-            audioSpan.appendChild(trackName);
-            audioSpan.appendChild(previewTrack)
-            cont.querySelector('.card-body').appendChild(audioSpan);
+          totalMilisTime += item.trackTimeMillis;
 
-          }
-          i++;
+          /*
+          adding all songs preview from the album
+          */
+
+          tracksList.innerHTML = 
+          `
+          <span class="${item.trackId} track-number">${songs.results.indexOf(item)}</span>
+          <span class="song-name">${item.trackName}</span>
+          <span class="track-time">${millisToMinutesAndSeconds(item.trackTimeMillis, "song")} /</span>
+          <audio src="${item.previewUrl}" controls controlslist="nodownload">
+          </audio>
+          `;
+          // <button class="${item.trackId}">${songs.results.indexOf(item)}</button>
+
+
+          trackContainer.appendChild(tracksList);
         }
       });
-  } else {
+      console.log(`Album ${songs.results[0].collectionName} and milisecs time: ${millisToMinutesAndSeconds(totalMilisTime, "album")}`);
+      const albumTime = document.createElement("span");
+      albumTime.innerHTML = `<span class="small-text badge badge-pill badge-warning ">Total time</span><p class="pb-3">${millisToMinutesAndSeconds(totalMilisTime, "album")}</p><br>`;
+      cont_div.querySelector('.card-text').appendChild(albumTime);
+      totalMilisTime = 0;
+
+    } else {
     const tracksList = document.createElement("span");
     tracksList.classList.add("track-list");
     tracksList.innerHTML = "---";
     let cont = document.querySelector(`.a-${songs.results[0].collectionId}`);
-    cont.querySelector('.track-container').appendChild(tracksList);
-  }
-}
+    cont.querySelector('.track-container').previousElementSibling.appendChild(tracksList);
 
+  }
+      // appending audio container at the end
+      cont_div.querySelector('.card-body').appendChild(audioSpan);
+}
 ///
 
 function query(url) {
   https.get(format(url), (res) => {
+    // let headerContent =  res.headers['content-type'];
+    // let headerAccept = res.headers['Accept'];
+    // console.log(`headers: Content-type: ${headerContent} and Accept: ${headerAccept}`);
+    // console.log('statusCode:', res.statusCode);
+    // console.log('headers:', res.headers);
+  
+
     let data = "";
     res.on('data', (d) => {
       data += d;
