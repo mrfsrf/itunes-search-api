@@ -166,7 +166,8 @@ p.card-text.pt-2 {
   margin-bottom: 10px; }
   .album-name h3 {
     font-size: 1.5em !important;
-    letter-spacing: 0.04em; }
+    letter-spacing: 0.04em;
+    color: #FD7963 !important; }
 
 .list-group-item {
   background: transparent !important;
