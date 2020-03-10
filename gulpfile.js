@@ -2,6 +2,7 @@
 
 const gulp = require('gulp');
 const sass = require('gulp-sass');
+const autoprefixer = require('gulp-autoprefixer');
 const browserify = require("browserify");
 const source = require('vinyl-source-stream');
 
@@ -11,6 +12,9 @@ const browserSync = require('browser-sync').create();
 function style() {
   return gulp.src(['node_modules/bootstrap/scss/bootstrap.scss', 'src/scss/*.scss'])
     .pipe(sass())
+    .pipe(autoprefixer({
+      cascade: false
+    }))
     .pipe(gulp.dest('dist/css'))
     .pipe(browserSync.stream());
 }

@@ -26,6 +26,7 @@ span.track-container {
   width: 100%;
   margin: 0 auto; }
   span.track-container ol {
+    -webkit-padding-start: 22px !important;
     padding-inline-start: 22px !important; }
 
 audio {
@@ -34,10 +35,12 @@ audio {
   position: relative;
   left: 8px;
   border: 0 !important;
+  -webkit-border-after: none !important;
   border-block-end: none !important;
   bottom: 2px; }
   audio.audio-player {
     border: 0 !important;
+    -webkit-border-after: none !important;
     border-block-end: none !important; }
 
 audio:focus {
@@ -98,6 +101,7 @@ audio::-webkit-media-controls-panel {
   background: white;
   border: 0 !important;
   border-radius: 0px !important;
+  -webkit-border-after: none !important;
   border-block-end: none !important;
   box-shadow: 0 !important; }
   audio::-webkit-media-controls-panel:focus {
@@ -156,6 +160,7 @@ img.card-img-top {
   width: 25%;
   margin-top: 10px;
   border-radius: 50% !important;
+  -webkit-filter: grayscale(100%);
   filter: grayscale(100%);
   display: inline-block;
   vertical-align: top;
