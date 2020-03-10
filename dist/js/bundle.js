@@ -9019,7 +9019,7 @@ function lookUpAlbum(data) {
         albumImage.classList.add("card-img-top");
         albumImage.src = "".concat(item.artworkUrl100); // cardHeader.innerHTML= `${item.collectionName}`;
 
-        albumText.innerHTML = "\n            <a href=\"".concat(item.collectionViewUrl, "\" target=\"_blank\" class=\"album-name\"><br><p>").concat(item.collectionName, "</p></a><br>\n            <span class=\"small-text badge badge-pill badge-warning\">$</span><p>").concat(item.collectionPrice, "</p><br>\n            <span class=\"small-text badge badge-pill badge-warning\">Nr. of tracks</span><p>").concat(item.trackCount, "</p><br>\n            <span class=\"small-text badge badge-pill badge-warning\">Genre</span><p>").concat(item.primaryGenreName, "</p><br>\n            <span class=\"small-text badge badge-pill badge-warning \">Release date</span><p class=\"pb-3\">").concat(item.releaseDate.slice(0, 10), "</p><br>\n            "); //
+        albumText.innerHTML = "\n            <a href=\"".concat(item.collectionViewUrl, "\" target=\"_blank\" class=\"album-name\"><br><h3>").concat(item.collectionName, "</h3></a><br>\n            <span class=\"small-text badge badge-pill badge-warning\">$</span><p>").concat(item.collectionPrice, "</p><br>\n            <span class=\"small-text badge badge-pill badge-warning\">Nr. of tracks</span><p>").concat(item.trackCount, "</p><br>\n            <span class=\"small-text badge badge-pill badge-warning\">Genre</span><p>").concat(item.primaryGenreName, "</p><br>\n            <span class=\"small-text badge badge-pill badge-warning \">Release date</span><p>").concat(item.releaseDate.slice(0, 10), "</p><br>\n            "); //
 
         cardGroup.appendChild(cardContainer); // cardContainer.appendChild(albumImage);
 
@@ -9111,15 +9111,16 @@ function songList(songs) {
         adding all songs preview from the album
         */
 
-        tracksList.innerHTML = "\n          <span class=\"".concat(item.trackId, " track-number\">").concat(songs.results.indexOf(item), "</span>\n          <span class=\"song-name\">").concat(item.trackName, "</span>\n          <span class=\"track-time\">").concat(millisToMinutesAndSeconds(item.trackTimeMillis, "song"), " /</span>\n          <audio src=\"").concat(item.previewUrl, "\" controls controlslist=\"nodownload\">\n          </audio>\n          "); // <button class="${item.trackId}">${songs.results.indexOf(item)}</button>
+        tracksList.innerHTML = "\n          <span class=\"".concat(item.trackId, " track-number\">").concat(songs.results.indexOf(item), "</span>\n          <span class=\"song-name\">").concat(item.trackName, "</span>\n          <span class=\"track-time\">").concat(millisToMinutesAndSeconds(item.trackTimeMillis, "song"), " /</span>\n          <audio class=\"audio-player\" src=\"").concat(item.previewUrl, "\" controls controlslist=\"nodownload\">\n          </audio>\n          "); // <button class="${item.trackId}">${songs.results.indexOf(item)}</button>
 
         trackContainer.appendChild(tracksList);
       }
     });
-    console.log("Album ".concat(songs.results[0].collectionName, " and milisecs time: ").concat(millisToMinutesAndSeconds(totalMilisTime, "album")));
-    var albumTime = document.createElement("span");
-    albumTime.innerHTML = "<span class=\"small-text badge badge-pill badge-warning \">Total time</span><p class=\"pb-3\">".concat(millisToMinutesAndSeconds(totalMilisTime, "album"), "</p><br>");
-    cont_div.querySelector('.card-text').appendChild(albumTime);
+    console.log("Album ".concat(songs.results[0].collectionName, " and milisecs time: ").concat(millisToMinutesAndSeconds(totalMilisTime, "album"))); // const albumTime = document.createElement("span");
+
+    var albumTime = "<span class=\"small-text badge badge-pill badge-warning \">Total time</span><p class=\"pb-3\">".concat(millisToMinutesAndSeconds(totalMilisTime, "album"), "</p><br>"); // cont_div.querySelector('.card-text').appendChild(albumTime);
+
+    cont_div.querySelector('.card-text').innerHTML += albumTime;
     totalMilisTime = 0;
   } else {
     var tracksList = document.createElement("span");

@@ -1,19 +1,23 @@
 body {
-  background: #929e9e;
-  font-family: "Roboto", sans-serif !important; }
+  background: white;
+  font-family: "Roboto", sans-serif !important;
+  color: #054158 !important; }
 
 .jumbotron {
-  background-color: #fde86b; }
+  background-color: #FD7963; }
+
+p.text-muted {
+  color: #184F63 !important; }
 
 .badge-warning {
-  background-color: #fde86b !important; }
+  color: #054158 !important;
+  background-color: #F7BBBB !important; }
 
 .card {
   min-width: 490px !important;
   max-width: 490px !important;
   border: 0px !important;
-  background: transparent !important;
-  border-bottom: 2px solid black !important; }
+  background: transparent !important; }
 
 span.track-container {
   background-color: rgba(0, 0, 0, 0.1);
@@ -25,11 +29,15 @@ span.track-container {
     padding-inline-start: 22px !important; }
 
 audio {
-  width: 100%;
+  width: 95%;
   height: 16px !important;
-  border: 0px !important;
   position: relative;
-  left: 8px; }
+  left: 8px;
+  border: 0 !important;
+  border-block-end: none !important; }
+  audio.audio-player {
+    border: 0 !important;
+    border-block-end: none !important; }
 
 audio:focus {
   outline: none !important; }
@@ -46,7 +54,7 @@ span.song-name {
   word-break: break-word;
   line-height: 14px;
   /* display: inline-block; */
-  color: white;
+  color: #054158;
   /* width: 90%; */
   padding-bottom: 9px;
   position: relative;
@@ -62,7 +70,7 @@ input#search-box {
   border: 0px;
   width: 30px;
   height: 30px;
-  background-color: #929e9e !important;
+  background-color: #054158 !important;
   border-radius: 50% !important;
   position: absolute;
   right: 20px;
@@ -86,10 +94,11 @@ input#search-box {
   fill: white !important; }
 
 audio::-webkit-media-controls-panel {
-  background: #929e9e !important;
+  background: white;
   border: 0 !important;
-  color: white !important;
-  border-radius: 0px !important; }
+  border-radius: 0px !important;
+  border-block-end: none !important;
+  box-shadow: 0 !important; }
   audio::-webkit-media-controls-panel:focus {
     outline: none !important; }
 
@@ -97,8 +106,7 @@ audio::-webkit-media-controls-mute-button {
   display: none; }
 
 audio::-webkit-media-controls-play-button {
-  width: 50% !important;
-  -webkit-filter: invert(100%); }
+  width: 50% !important; }
 
 audio::-webkit-media-controls-timeline {
   display: none !important; }
@@ -110,8 +118,8 @@ audio::-webkit-media-controls-current-time-display {
   display: inline-block !important;
   position: absolute;
   right: 10px;
-  color: white !important;
-  background-color: transparent; }
+  color: #054158 !important;
+  text-shadow: none !important; }
 
 audio::-webkit-media-controls-time-remaining-display {
   display: none; }
@@ -135,7 +143,7 @@ audio::-webkit-media-controls-volume-slider {
 .track-list span.track-time {
   display: inline-block;
   position: absolute;
-  right: 34px;
+  right: 58px;
   top: 16px;
   z-index: 999; }
 
@@ -156,19 +164,22 @@ p.card-text.pt-2 {
 .album-name {
   display: inline-block;
   margin-bottom: 10px; }
-  .album-name p {
-    font-size: 16px !important;
-    letter-spacing: 0.08em;
-    color: #fde86b !important; }
+  .album-name h3 {
+    font-size: 1.5em !important;
+    letter-spacing: 0.04em; }
 
 .list-group-item {
   background: transparent !important;
   border: 0 !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-bottom: 2px solid #F7BBBB !important;
   padding: 0 !important; }
+  .list-group-item:hover {
+    background: #E9E5E2 !important; }
+    .list-group-item:hover audio::-webkit-media-controls-panel {
+      background: #E9E5E2 !important; }
 
 span.small-text {
-  font-size: 10px;
+  font-size: 12px;
   margin-right: 12px !important;
   line-height: 11px;
   margin-right: 12px !important; }
@@ -190,11 +201,11 @@ span.small-text {
   font-size: 0.8em;
   font-weight: bold;
   display: inline-block;
-  color: white; }
+  color: #054158; }
 
 .track-list {
   font-size: 13px !important;
-  color: white;
+  color: #054158;
   line-height: 16px;
   /* margin-top: 5px; */
   cursor: pointer; }

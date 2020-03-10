@@ -2,17 +2,23 @@
 // @import "bootstrap";
 
 body {
-  background: #929e9e;
+  background: $bg-color;
   font-family: "Roboto", sans-serif !important;
+  color: $dark-blue!important;
 }
 
 .jumbotron {
-  background-color: #fde86b;
+  background-color: $dark-peach;
   // background-color: #43AB8D;
 }
 
+p.text-muted {
+  color: $light-blue!important;
+}
+
 .badge-warning {
-  background-color: #fde86b !important;
+  color: $dark-blue!important;
+  background-color: $light-peach !important;
 }
 .card {
   // needs fixing !!!
@@ -20,7 +26,7 @@ body {
   max-width: 490px !important;
   border: 0px !important;
   background: transparent !important;
-  border-bottom: 2px solid black !important;
+  // border-bottom: 2px solid black !important;
   // flex-direction: row!important;
 }
 
@@ -39,13 +45,16 @@ span.track-container {
 
 audio {
   // filter: sepia(70%) saturate(10%) grayscale(1) contrast(90%) invert(20%);
-  width: 100%;
+  width: 95%;
   height: 16px !important;
-  border: 0px !important;
-  // transform: scale3d(.8, .8, .8);
-  // background-color: #95B9C7;
   position: relative;
   left: 8px;
+  border:0!important;
+  border-block-end: none!important;
+  &.audio-player {
+    border:0!important;
+    border-block-end: none!important;
+  }
 }
 
 audio:focus {
@@ -65,7 +74,7 @@ span.song-name {
   word-break: break-word;
   line-height: 14px;
   /* display: inline-block; */
-  color: white;
+  color: $dark-blue;
   /* width: 90%; */
   padding-bottom: 9px;
   position: relative;
@@ -84,13 +93,13 @@ input#search-box {
     border: 0px;
     width: 30px;
     height: 30px;
-    background-color: #929e9e !important;
+    background-color: $dark-blue !important;
     border-radius: 50% !important;
     position: absolute;
     right: 20px;
     vertical-align: middle;
     top: 3px;
-    z-index: 999999!important;
+    z-index: 999999 !important;
 
     &:after {
       // content:"\f002";
@@ -104,22 +113,22 @@ input#search-box {
       background-size: 70%;
       position: absolute;
       right: 1px;
-     
     }
-
   }
 
   svg {
     display: inline-block;
-    fill: white!important
+    fill: white !important;
   }
 }
 
 audio::-webkit-media-controls-panel {
-  background: #929e9e !important;
+  background: $bg-color;
   border: 0 !important;
-  color: white !important;
   border-radius: 0px !important;
+  border-block-end: none!important;
+  box-shadow: 0!important;
+  
   &:focus {
     outline: none !important;
   }
@@ -131,7 +140,7 @@ audio::-webkit-media-controls-mute-button {
 
 audio::-webkit-media-controls-play-button {
   width: 50% !important;
-  -webkit-filter: invert(100%); // convert to white -- hack
+  // -webkit-filter: invert(100%); // convert to white -- hack
 }
 
 audio::-webkit-media-controls-timeline {
@@ -144,8 +153,9 @@ audio::-webkit-media-controls-current-time-display {
   display: inline-block !important;
   position: absolute;
   right: 10px;
-  color: white !important;
-  background-color: transparent;
+  color: $dark-blue !important;
+  text-shadow:none!important;
+
 }
 audio::-webkit-media-controls-time-remaining-display {
   display: none;
@@ -177,7 +187,7 @@ audio::-webkit-media-controls-volume-slider {
   span.track-time {
     display: inline-block;
     position: absolute;
-    right: 34px;
+    right: 58px;
     top: 16px;
     z-index: 999;
   }
@@ -207,27 +217,35 @@ p.card-text.pt-2 {
   display: inline-block;
   margin-bottom: 10px;
 
-  p {
-    font-size: 16px !important;
-    letter-spacing: 0.08em;
-    color: #fde86b !important;
+  // p {
+  //   font-size: 16px !important;
+  //   letter-spacing: 0.08em;
+  //   color: #fde86b !important;
+  // }
+  h3 {
+    font-size: 1.5em !important;
+    letter-spacing: 0.04em;
+
   }
+
 }
 .list-group-item {
   background: transparent !important;
   border: 0 !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
-  // padding: 0.75rem 3rem !important;
+  border-bottom: 2px solid $light-peach !important;
   padding: 0 !important;
 
-  // &:hover {
-  //   background: rgba(255, 255, 255, 0.4) !important;
-  //   border-bottom: 0 !important;
-  // }
+ 
+  &:hover {
+    background:$track-hover !important;
+    audio::-webkit-media-controls-panel {
+      background:$track-hover !important;
+    }
+  }
 }
 
 span.small-text {
-  font-size: 10px;
+  font-size: 12px;
   margin-right: 12px !important;
   line-height: 11px;
   margin-right: 12px !important;
@@ -252,13 +270,13 @@ span.small-text {
     font-size: 0.8em;
     font-weight: bold;
     display: inline-block;
-    color: white;
+    color: $dark-blue;
   }
 }
 
 .track-list {
   font-size: 13px !important;
-  color: white;
+  color: $dark-blue;
   line-height: 16px;
   // display:list-item!important; //ovo stavitit kad vratim na ol !!!!
   /* margin-top: 5px; */

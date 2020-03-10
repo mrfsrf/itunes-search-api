@@ -86,11 +86,11 @@ function lookUpAlbum(data) {
           // cardHeader.innerHTML= `${item.collectionName}`;
           albumText.innerHTML =
             `
-            <a href="${item.collectionViewUrl}" target="_blank" class="album-name"><br><p>${item.collectionName}</p></a><br>
+            <a href="${item.collectionViewUrl}" target="_blank" class="album-name"><br><h3>${item.collectionName}</h3></a><br>
             <span class="small-text badge badge-pill badge-warning">$</span><p>${item.collectionPrice}</p><br>
             <span class="small-text badge badge-pill badge-warning">Nr. of tracks</span><p>${item.trackCount}</p><br>
             <span class="small-text badge badge-pill badge-warning">Genre</span><p>${item.primaryGenreName}</p><br>
-            <span class="small-text badge badge-pill badge-warning ">Release date</span><p class="pb-3">${item.releaseDate.slice(0, 10)}</p><br>
+            <span class="small-text badge badge-pill badge-warning ">Release date</span><p>${item.releaseDate.slice(0, 10)}</p><br>
             `
           //
           cardGroup.appendChild(cardContainer);
@@ -200,7 +200,7 @@ function songList(songs) {
           <span class="${item.trackId} track-number">${songs.results.indexOf(item)}</span>
           <span class="song-name">${item.trackName}</span>
           <span class="track-time">${millisToMinutesAndSeconds(item.trackTimeMillis, "song")} /</span>
-          <audio src="${item.previewUrl}" controls controlslist="nodownload">
+          <audio class="audio-player" src="${item.previewUrl}" controls controlslist="nodownload">
           </audio>
           `;
           // <button class="${item.trackId}">${songs.results.indexOf(item)}</button>
@@ -210,9 +210,11 @@ function songList(songs) {
         }
       });
       console.log(`Album ${songs.results[0].collectionName} and milisecs time: ${millisToMinutesAndSeconds(totalMilisTime, "album")}`);
-      const albumTime = document.createElement("span");
-      albumTime.innerHTML = `<span class="small-text badge badge-pill badge-warning ">Total time</span><p class="pb-3">${millisToMinutesAndSeconds(totalMilisTime, "album")}</p><br>`;
-      cont_div.querySelector('.card-text').appendChild(albumTime);
+      // const albumTime = document.createElement("span");
+      let albumTime = `<span class="small-text badge badge-pill badge-warning ">Total time</span><p class="pb-3">${millisToMinutesAndSeconds(totalMilisTime, "album")}</p><br>`;
+      // cont_div.querySelector('.card-text').appendChild(albumTime);
+      cont_div.querySelector('.card-text').innerHTML += albumTime;
+
       totalMilisTime = 0;
 
     } else {
