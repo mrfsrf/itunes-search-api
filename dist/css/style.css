@@ -13,11 +13,32 @@ p.text-muted {
   color: #054158 !important;
   background-color: #F7BBBB !important; }
 
+.card-columns {
+  -webkit-column-count: 2 !important;
+  -moz-column-count: 2 !important;
+  column-count: 2 !important; }
+
 .card {
-  min-width: 490px !important;
-  max-width: 490px !important;
   border: 0px !important;
   background: transparent !important; }
+
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+  -webkit-animation-duration: 3s;
+  animation-duration: 3s; }
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
 
 span.track-container {
   background-color: rgba(0, 0, 0, 0.1);
@@ -57,7 +78,7 @@ span.song-name {
   font-size: 14px;
   word-break: break-word;
   line-height: 14px;
-  /* display: inline-block; */
+  display: inline-block;
   color: #054158;
   /* width: 90%; */
   padding-bottom: 9px;
@@ -178,6 +199,12 @@ p.card-text.pt-2 {
     font-size: 1.5em !important;
     letter-spacing: 0.04em;
     color: #FD7963 !important; }
+
+.current-artist {
+  height: 40px;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 1.8em; }
 
 .list-group-item {
   background: transparent !important;

@@ -8962,9 +8962,12 @@ require('url-search-params-polyfill');
 var https = require('https');
 
 var searchString = "the misfits";
-var cardGroup = document.querySelector('.card-group'); //add event listener on the search button
+var cardGroup = document.querySelector('.card-columns');
+var searchInput = document.querySelector('.music-search');
+var infoText = document.querySelector('.loading'); //add event listener on the search button
 
-document.querySelector(".search-button").addEventListener('click', newSearch); //https://itunes.apple.com/search?term=${searchString}&media=music&limit=20 //artist
+document.querySelector(".search-button").addEventListener('click', newSearch); // document.querySelector(".search-music-artist").addEventListener('input', quickSearch); // implement later
+//https://itunes.apple.com/search?term=${searchString}&media=music&limit=20 //artist
 //https://itunes.apple.com/lookup?id=120199&entity=album // get albums
 //https://itunes.apple.com/lookup?id=1468202477&entity=song  // songs from albums
 // album time = 643128 * trackCount * discCount
@@ -8976,6 +8979,19 @@ baseUrl.protocol = 'https:';
 baseUrl.host = 'itunes.apple.com';
 baseUrl.pathname = '/search';
 baseUrl.search = parameters.toString(); ///
+
+function quickSearch() {
+  searchString = searchInput.value.split(' ').join("+");
+  searchInput.innerHTML = "";
+
+  if (searchArtist.value.length === 0) {
+    cardGroup.innerHTML = ""; // infoText.innerHTML = "No Results";
+  }
+
+  if (searchString !== undefined && searchString.length > 0) {// search only artist
+  }
+} ///
+
 
 function newSearch() {
   var inputElement = document.querySelector(".search-music-artist");
@@ -9005,15 +9021,18 @@ function lookUpArtist(artistId) {
 function lookUpAlbum(data) {
   if (data.resultCount > 0) {
     //reset the container
-    var container = document.querySelector('.card-group');
+    var container = document.querySelector('.card-columns');
     container.innerHTML = "";
+    document.querySelector('.current-artist').innerHTML = "".concat(data.results[0].artistName);
     data.results.forEach(function (item) {
       if (item.wrapperType === "collection") {
         var albumImage = document.createElement("img");
         var albumBody = document.createElement("div");
         var albumText = document.createElement("p");
         var cardContainer = document.createElement("div");
-        cardContainer.classList.add("card", "mr-3", "mb-3", "pb-3", "a-" + item.collectionId);
+        cardContainer.classList.add("card", "mr-3", "mb-3", "pb-3", "lazy-loading", "a-" + item.collectionId);
+        cardContainer.style.opacity = 0;
+        cardContainer.setAttribute("data-lazy", "true");
         albumBody.classList.add("card-body", "align-top");
         albumText.classList.add("card-text", "pt-2");
         albumImage.classList.add("card-img-top");
@@ -9027,9 +9046,26 @@ function lookUpAlbum(data) {
         cardContainer.appendChild(albumBody);
         albumBody.appendChild(albumText);
         lookUpSongs(item.collectionId);
+        var lazyTargets = document.querySelectorAll('.lazy-loading');
+        lazyTargets.forEach(lazyLoad);
       }
     });
   }
+} // The lazy loading observer
+
+
+function lazyLoad(target) {
+  var obs = new IntersectionObserver(function (entries, observer) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        var card = entry.target;
+        card.classList.add('fadeIn');
+        card.style.opacity = 1;
+        observer.disconnect();
+      }
+    });
+  });
+  obs.observe(target);
 }
 
 function lookUpSongs(id) {
