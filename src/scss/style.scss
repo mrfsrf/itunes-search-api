@@ -146,6 +146,45 @@ input#search-box {
   }
 }
 
+// datalist#result-list {
+//   display: inline-block;
+//   width: 100%;
+//   /* background: burlywood; */
+//   /* border-radius: 6px; */
+//   background: white;
+//   border-bottom-left-radius: 15px;
+//   border-bottom-right-radius: 15px;
+//   margin-top: -15px;
+//   padding-top: 20px;
+// }
+// option {
+//   text-align: left;
+//   padding-left: 11px;
+
+// }
+
+.list-group.result-list {
+
+  padding-left: 0;
+  margin-bottom: 0;
+  display: inline-block;
+  width: 100%;
+  background: white;
+  border: 0px!important;
+  margin-top: -19px;
+  padding-top: 20px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  .list-group-item{
+      text-align: left;
+  padding-left: 11px!important;
+  border-bottom: 0px !important;
+  padding: 7px 15px !important;
+  font-size: 16px;
+  }
+}
+
 audio::-webkit-media-controls-panel {
   background: $bg-color;
   border: 0 !important;

@@ -8964,10 +8964,26 @@ var https = require('https');
 var searchString = "the misfits";
 var cardGroup = document.querySelector('.card-columns');
 var searchInput = document.querySelector('.music-search');
-var infoText = document.querySelector('.loading'); //add event listener on the search button
+var infoText = document.querySelector('.loading');
+var searchInputField = document.querySelector('.search-music-artist');
+var searchStringTyped = "";
+var tick = false; // create one global XHR object 
+// so we can abort old requests when a new one is make
 
-document.querySelector(".search-button").addEventListener('click', newSearch); // document.querySelector(".search-music-artist").addEventListener('input', quickSearch); // implement later
-//https://itunes.apple.com/search?term=${searchString}&media=music&limit=20 //artist
+window.hinterXHR = new XMLHttpRequest(); //add event listener on the search button
+
+document.querySelector(".search-button").addEventListener('click', newSearch); // document.querySelector(".search-music-artist").addEventListener('input', quickSearch(callQuickSearch, 16)); // implement later
+
+searchInputField.addEventListener('input', function (e) {
+  if (!tick) {
+    setTimeout(function () {
+      customFunction(e);
+      tick = false;
+    }, 30);
+  }
+
+  tick = true;
+}); //https://itunes.apple.com/search?term=${searchString}&media=music&limit=20 //artist
 //https://itunes.apple.com/lookup?id=120199&entity=album // get albums
 //https://itunes.apple.com/lookup?id=1468202477&entity=song  // songs from albums
 // album time = 643128 * trackCount * discCount
@@ -8980,18 +8996,74 @@ baseUrl.host = 'itunes.apple.com';
 baseUrl.pathname = '/search';
 baseUrl.search = parameters.toString(); ///
 
-function quickSearch() {
-  searchString = searchInput.value.split(' ').join("+");
-  searchInput.innerHTML = "";
+function customFunction(e) {
+  searchStringTyped = searchInputField.value.trim();
+  var huge_list = document.querySelector('.result-list');
+  searchInputField.innerHTML = "";
+  console.log("input " + searchStringTyped);
 
-  if (searchArtist.value.length === 0) {
+  if (searchStringTyped.length === 0) {
     cardGroup.innerHTML = ""; // infoText.innerHTML = "No Results";
   }
 
-  if (searchString !== undefined && searchString.length > 0) {// search only artist
-  }
-} ///
+  if (searchStringTyped !== undefined && searchStringTyped.length > 4) {
+    // search only artist
+    //let apiCall = `https://itunes.apple.com/search?term=${searchStringTyped}&media=music&entity=musicArtist&limit=20`;
+    // let suggestParameters = new URLSearchParams([
+    //   ['term', `${searchStringTyped}`],
+    //   ['media', 'music'],
+    //   ['entity', 'musicArtist'],
+    //   ['limit', '5']
+    // ]);
+    // baseUrl.pathname = '/search';
+    // baseUrl.search = suggestParameters.toString();
+    // console.log("bsaseurl " + format(baseUrl));
+    // query(baseUrl); 
+    // abort any pending requests
+    window.hinterXHR.abort();
 
+    window.hinterXHR.onreadystatechange = function () {
+      if (window.hinterXHR.readyState == 4 && window.hinterXHR.status == 200) {
+        // We're expecting a json response so we convert it to an object
+        var response = JSON.parse(window.hinterXHR.responseText);
+        console.log("response " + response.results[0].artistName); // clear any previously loaded options in the datalist
+
+        huge_list.innerHTML = "";
+        response.results.forEach(function (item) {
+          // Create a new <option> element.
+          var option = document.createElement('a'); // <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
+
+          option.classList.add('list-group-item', 'list-group-item-action', 'quick-results');
+          option.setAttribute('data-toggle', 'list');
+          option.setAttribute('role', 'tab');
+          option.setAttribute('aria-controls', "".concat(item.artistName));
+          option.href = "\"#".concat(item.artistName, "\""); // option.value = item.artistName;
+
+          option.innerText = item.artistName; // attach the option to the datalist element
+
+          huge_list.appendChild(option);
+        });
+      }
+    };
+
+    window.hinterXHR.open("GET", "https://itunes.apple.com/search?term=".concat(searchStringTyped, "&media=music&entity=musicArtist&limit=5"), true);
+    window.hinterXHR.send();
+  }
+}
+
+function newQuickLink(e) {
+  e.preventDefault();
+  var targetLink = e.target;
+  var searchStringQuery = targetLink.innerText;
+  var newQuickSearchParams = new URLSearchParams([['term', "".concat(searchStringQuery)], ['media', 'music'], ['entity', 'musicArtist'], ['limit', '20']]);
+  baseUrl.pathname = '/search';
+  baseUrl.search = newQuickSearchParams.toString();
+  console.log("baseurl---> " + format(baseUrl));
+  query(baseUrl);
+  document.querySelector('.result-list').innerHTML = "";
+}
+
+document.querySelector('.result-list').addEventListener("click", newQuickLink); ///
 
 function newSearch() {
   var inputElement = document.querySelector(".search-music-artist");
@@ -9177,7 +9249,7 @@ function query(url) {
     // let headerAccept = res.headers['Accept'];
     // console.log(`headers: Content-type: ${headerContent} and Accept: ${headerAccept}`);
     // console.log('statusCode:', res.statusCode);
-    // console.log('headers:', res.headers);
+    console.log(format(url));
     var data = "";
     res.on('data', function (d) {
       data += d;
