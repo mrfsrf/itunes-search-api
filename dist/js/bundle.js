@@ -8967,10 +8967,7 @@ var searchInput = document.querySelector('.music-search');
 var infoText = document.querySelector('.loading');
 var searchInputField = document.querySelector('.search-music-artist');
 var searchStringTyped = "";
-var tick = false; // create one global XHR object 
-// so we can abort old requests when a new one is make
-
-window.hinterXHR = new XMLHttpRequest(); //add event listener on the search button
+var tick = false; //add event listener on the search button
 
 document.querySelector(".search-button").addEventListener('click', newSearch); // document.querySelector(".search-music-artist").addEventListener('input', quickSearch(callQuickSearch, 16)); // implement later
 
@@ -8979,7 +8976,7 @@ searchInputField.addEventListener('input', function (e) {
     setTimeout(function () {
       customFunction(e);
       tick = false;
-    }, 30);
+    }, 10);
   }
 
   tick = true;
@@ -9009,45 +9006,42 @@ function customFunction(e) {
   if (searchStringTyped !== undefined && searchStringTyped.length > 4) {
     // search only artist
     //let apiCall = `https://itunes.apple.com/search?term=${searchStringTyped}&media=music&entity=musicArtist&limit=20`;
-    // let suggestParameters = new URLSearchParams([
-    //   ['term', `${searchStringTyped}`],
-    //   ['media', 'music'],
-    //   ['entity', 'musicArtist'],
-    //   ['limit', '5']
-    // ]);
-    // baseUrl.pathname = '/search';
-    // baseUrl.search = suggestParameters.toString();
-    // console.log("bsaseurl " + format(baseUrl));
-    // query(baseUrl); 
+    var suggestParameters = new URLSearchParams([['term', "".concat(searchStringTyped)], ['media', 'music'], ['entity', 'musicArtist'], ['limit', '5']]);
+    baseUrl.pathname = '/search';
+    baseUrl.search = suggestParameters.toString();
+    console.log("bsaseurl " + format(baseUrl)); // query(baseUrl); 
     // abort any pending requests
-    window.hinterXHR.abort();
 
-    window.hinterXHR.onreadystatechange = function () {
-      if (window.hinterXHR.readyState == 4 && window.hinterXHR.status == 200) {
-        // We're expecting a json response so we convert it to an object
-        var response = JSON.parse(window.hinterXHR.responseText);
-        console.log("response " + response.results[0].artistName); // clear any previously loaded options in the datalist
+    var req = https.request(format(baseUrl), function (res) {
+      var dataTwo = "";
+      res.on('data', function (d) {
+        // process.stdout.write(d);
+        dataTwo += d;
+      });
+      res.on('end', function () {
+        if (res.statusCode === 200) {
+          huge_list.innerHTML = "";
+          var dataTwoJson = JSON.parse(dataTwo);
+          dataTwoJson.results.forEach(function (item) {
+            var option = document.createElement('a');
+            option.classList.add('list-group-item', 'list-group-item-action', 'quick-results');
+            option.setAttribute('data-toggle', 'list');
+            option.setAttribute('role', 'tab');
+            option.setAttribute('aria-controls', "".concat(item.artistName));
+            option.href = "\"#".concat(item.artistName, "\""); // option.value = item.artistName;
 
-        huge_list.innerHTML = "";
-        response.results.forEach(function (item) {
-          // Create a new <option> element.
-          var option = document.createElement('a'); // <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
+            option.innerText = item.artistName; // attach the option to the datalist element
 
-          option.classList.add('list-group-item', 'list-group-item-action', 'quick-results');
-          option.setAttribute('data-toggle', 'list');
-          option.setAttribute('role', 'tab');
-          option.setAttribute('aria-controls', "".concat(item.artistName));
-          option.href = "\"#".concat(item.artistName, "\""); // option.value = item.artistName;
-
-          option.innerText = item.artistName; // attach the option to the datalist element
-
-          huge_list.appendChild(option);
-        });
-      }
-    };
-
-    window.hinterXHR.open("GET", "https://itunes.apple.com/search?term=".concat(searchStringTyped, "&media=music&entity=musicArtist&limit=5"), true);
-    window.hinterXHR.send();
+            huge_list.appendChild(option);
+          });
+          dataTwo = "";
+        }
+      });
+    });
+    req.on('error', function (e) {
+      console.error(e);
+    });
+    req.end();
   }
 }
 
@@ -9162,35 +9156,6 @@ function millisToMinutesAndSeconds(millis, type) {
     console.log("Something went wrong. Type is neither song nor album");
   }
 }
-/* playing song preview handle */
-
-
-function playSong(id) {
-  // const trackId = id;
-
-  /*
-  Code goes here
-  */
-  var player = document.querySelector(".track-".concat(id));
-  console.log(player); //  if(id){ 
-  //     player = document.querySelector(`.track-${id}`);
-  //     console.log(player);
-  //   } else {
-  //     console.log("something is worong");
-  //   }
-  // if(player) {
-  //   stopOtherPlayers();
-  //   player.play()
-  // }
-
-  function stopOtherPlayers() {
-    var players = document.querySelectorAll('.audio-track audio');
-
-    for (var i = 0; i < players.length; i++) {
-      players[i].pause();
-    }
-  }
-}
 
 function songList(songs) {
   var cont_div = document.querySelector(".a-".concat(songs.results[0].collectionId));
@@ -9249,7 +9214,6 @@ function query(url) {
     // let headerAccept = res.headers['Accept'];
     // console.log(`headers: Content-type: ${headerContent} and Accept: ${headerAccept}`);
     // console.log('statusCode:', res.statusCode);
-    console.log(format(url));
     var data = "";
     res.on('data', function (d) {
       data += d;

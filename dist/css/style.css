@@ -58,7 +58,7 @@ audio {
   border: 0 !important;
   -webkit-border-after: none !important;
   border-block-end: none !important;
-  bottom: 2px; }
+  bottom: 8px; }
   audio.audio-player {
     border: 0 !important;
     -webkit-border-after: none !important;
